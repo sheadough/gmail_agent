@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Gmail Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <p>Configure monitoring and notification parameters</p>
+        </div>
+
+        <div class="nav-tabs">
+            <a href="/" class="nav-tab">Dashboard</a>
+            <a href="/analytics" class="nav-tab">Analytics</a>
+            <a href="/tickets" class="nav-tab">History</a>
+            <a href="/settings" class="nav-tab active">Settings</a>
+        </div>
+
+        <!-- Baseline Parameters -->
+        <div class="settings-panel">
+            <h3>📊 Baseline Escalation Parameters</h3>
+            <p>These criteria determine which tickets should be escalated based on fixed rules.</p>
+            
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label for="minHourlyPay">Minimum Hourly Pay ($)</label>
+                    <input type="number" id="minHourlyPay" value="{{ config.baseline_params.get('min_hourly_pay', 25) }}" step="0.50">
+                    <small>Only escalate if hourly pay is at least this amount</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxDistance">Maximum Distance (miles)</label>
+                    <input type="number" id="maxDistance" value="{{ config.baseline_params.get('max_distance', 30) }}" step="1">
+                    <small>Only escalate if job is within this distance</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="minTotalPay">Minimum Total Pay ($)</label>
+                    <input type="number" id="minTotalPay" value="{{ config.baseline_params.get('min_total_pay', 100) }}" step="5">
+                    <small>Only escalate if total potential pay is at least this amount</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxHours">Maximum Hours</label>
+                    <input type="number" id="maxHours" value="{{ config.baseline_params.get('max_hours', 8) }}" step="0.5">
+                    <small>Only escalate if job duration is at most this many hours</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="criteriaThreshold">Criteria Threshold</label>
+                    <input type="number" id="criteriaThreshold" value="{{ config.baseline_params.get('criteria_threshold', 0.7) }}" min="0" max="1" step="0.1">
+                    <small>Percentage of criteria that must be met (0.0 - 1.0)</small>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="saveBaselineBtn" class="btn btn-primary">💾 Save Baseline Settings</button>
+            </div>
+        </div>
+
+        <!-- SMS Configuration -->
+        <div class="settings-panel">
+            <h3>📱 SMS Notification Settings</h3>
+            <p>Configure SMS alerts for escalated tickets.</p>
+            
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" value="{{ config.sms.get('phone_number', '') }}" placeholder="+1234567890">
+                    <small>Include country code (e.g., +1 for US)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="smsService">SMS Service</label>
+                    <select id="smsService" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px;">
+                        <option value="textbelt" {{ 'selected' if config.sms.get('service') == 'textbelt' else '' }}>TextBelt (Free)</option>
+                        <option value="twilio" {{ 'selected' if config.sms.get('service') == 'twilio' else '' }}>Twilio</option>
+                    </select>
+                    <small>TextBelt is free but limited. Twilio requires account setup.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKey" value="{{ config.sms.get('api_key', 'textbelt') }}" placeholder="API Key">
+                    <small>Use 'textbelt' for free tier, or your Twilio Auth Token</small>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="saveSmsBtn" class="btn btn-primary">💾 Save SMS Settings</button>
+                <button id="testSmsBtn" class="btn btn-secondary">📱 Test SMS</button>
+            </div>
+        </div>
+
+        <!-- Monitoring Configuration -->
+        <div class="settings-panel">
+            <h3>🔄 Monitoring Settings</h3>
+            <p>Configure email checking frequency and lookback period.</p>
+            
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label for="checkInterval">Check Interval (minutes)
