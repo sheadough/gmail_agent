@@ -1,0 +1,33 @@
+# Field Nation Monitor Requirements
+
+# Core ML and Data Processing
+scikit-learn
+pandas
+numpy
+joblib
+
+# Flask Web Framework
+Flask
+Jinja2
+
+# Gmail API
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+
+# SMS Services
+#twilio>
+#requests>
+
+# Additional utilities
+python-dateutil
+pytz
+
+# Optional: For better email parsing
+beautifulsoup4
+lxml
+
+# Development and testing
+pytest
+pytest-flask

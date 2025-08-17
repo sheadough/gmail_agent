@@ -1,0 +1,19 @@
+{
+  "baseline_params": {
+    "min_hourly_pay": 50,
+    "min_total_pay": 0,
+    "max_distance": 50,
+    "criteria_threshold": 0.7,
+    "max_hours": 100
+  },
+  "sms": {
+    "service": "textbelt",
+    "phone_number": "555-555-5555",
+    "api_key": "textbelt"
+  },
+  "monitoring": {
+    "check_interval_minutes": 1,
+    "hours_back": 24
+  },
+  "ml_threshold": 7.0
+}
